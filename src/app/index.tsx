@@ -7,8 +7,10 @@ import { useRef, useState } from 'react';
 import { CategoryButton } from '../components/category-button';
 import { Header } from '../components/header';
 import { Product } from '../components/product';
+import { useCartStore } from '../stores/cart-store';
 
 export default function Home() {
+  const cartStore = useCartStore();
   const [category, setCategory] = useState(CATEGORIES[0]);
 
   /**
@@ -16,14 +18,17 @@ export default function Home() {
    */
   const sectionListRef = useRef<SectionList>(null);
 
+  const cartQuantityItems = cartStore.products.reduce(
+    (total, product) => total + product.quantity,
+    0
+  );
+
   function handleCategorySelect(selectedCategory: string) {
     setCategory(selectedCategory);
 
     const sectionIndex = CATEGORIES.findIndex(
       (category) => category === selectedCategory
     );
-
-    console.log(sectionIndex);
 
     if (sectionListRef.current) {
       sectionListRef.current.scrollToLocation({
@@ -34,13 +39,11 @@ export default function Home() {
     }
   }
 
-  // console.log(category);
-
   return (
     <View className="flex-1 pt-20">
       <Header
         title="Faça seu pedido"
-        cartQuantityItems={5}
+        cartQuantityItems={cartQuantityItems}
       />
 
       {/* in keyExtractor, I'm using item title as key */}
