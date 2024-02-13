@@ -3,7 +3,7 @@ import { LinkButton } from '@/src/components/link-button';
 import { PRODUCTS } from '@/src/utils/data/products';
 import { formatCurrency } from '@/src/utils/functions/format-currency';
 import { Feather } from '@expo/vector-icons';
-import { useLocalSearchParams, useNavigation } from 'expo-router';
+import { Redirect, useLocalSearchParams, useNavigation } from 'expo-router';
 import { Image, Text, View } from 'react-native';
 import { useCartStore } from '../../stores/cart-store';
 
@@ -15,8 +15,14 @@ export default function Product() {
   const product = PRODUCTS.filter((item) => item.id === id)[0];
 
   function handleAddToCart() {
-    cartStore.add(product);
-    navigation.goBack();
+    if (product) {
+      cartStore.add(product);
+      navigation.goBack();
+    }
+  }
+
+  if (!product) {
+    return <Redirect href="/" />;
   }
 
   return (

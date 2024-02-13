@@ -1,5 +1,5 @@
 import { FlatList, SectionList, Text, View } from 'react-native';
-import { CATEGORIES, MENU } from '../utils/data/products';
+import { CATEGORIES, MENU, ProductProps } from '../utils/data/products';
 
 import { Link } from 'expo-router';
 
@@ -16,7 +16,7 @@ export default function Home() {
   /**
    * In this scenario, useRef is used to save the reference to a list, so we can manipulate it directly.
    */
-  const sectionListRef = useRef<SectionList>(null);
+  const sectionListRef = useRef<SectionList<ProductProps>>(null);
 
   const cartQuantityItems = cartStore.products.reduce(
     (total, product) => total + product.quantity,
